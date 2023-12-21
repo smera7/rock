@@ -37,26 +37,66 @@ function playRound(playerSelection, computerSelection) {
     }
 }
 
-function game() {
-    for (let i = 0; i < 5; i++) {
-        const computerSelection = getComputerChoice();
-        const playerSelection = prompt("Enter your choice: ").toLowerCase();
+// Create buttons for each selection
+const rockButton = document.createElement("button");
+rockButton.textContent = "Rock";
 
-        console.log("Player Selection:", playerSelection);
-        console.log("Computer Selection:", computerSelection);
-        console.log(playRound(playerSelection, computerSelection));
-    }
+const paperButton = document.createElement("button");
+paperButton.textContent = "Paper";
 
-    console.log("Player Wins:", playerWins);
-    console.log("Computer Wins:", computerWins);
+const scissorsButton = document.createElement("button");
+scissorsButton.textContent = "Scissors";
 
-    if (playerWins > computerWins) {
-        return "You win!";
-    } else if (playerWins < computerWins) {
-        return "You lose!";
-    } else {
-        return "It's a tie!";
+// Add event listeners to the buttons
+rockButton.addEventListener("click", () => {
+    playRound("rock", getComputerChoice());
+    updateScore();
+});
+
+paperButton.addEventListener("click", () => {
+    playRound("paper", getComputerChoice());
+    updateScore();
+});
+
+scissorsButton.addEventListener("click", () => {
+    playRound("scissors", getComputerChoice());
+    updateScore();
+});
+
+// Append the buttons to a container element
+const buttonContainer = document.createElement("div");
+buttonContainer.appendChild(rockButton);
+buttonContainer.appendChild(paperButton);
+buttonContainer.appendChild(scissorsButton);
+
+// Append the container element to the document body
+document.body.appendChild(buttonContainer);
+
+// Add a div for displaying results and append it to the body
+const resultsDiv = document.createElement("div");
+document.body.appendChild(resultsDiv);
+
+function updateScore() {
+    // Update the text content of playerWinsElement and computerWinsElement
+    const playerWinsElement = document.createElement("p");
+    playerWinsElement.textContent = "Player Wins: " + playerWins;
+
+    const computerWinsElement = document.createElement("p");
+    computerWinsElement.textContent = "Computer Wins: " + computerWins;
+
+    // Remove previous score elements before appending new ones
+    resultsDiv.innerHTML = '';
+    resultsDiv.appendChild(playerWinsElement);
+    resultsDiv.appendChild(computerWinsElement);
+
+    // Check if the game is over
+    if (playerWins === 5 || computerWins === 5) {
+        const gameResult = document.createElement("p");
+        gameResult.textContent = playerWins === 5 ? "You win the game!" : "Computer wins the game!";
+        resultsDiv.appendChild(gameResult);
+
+        // Reset scores for a new game
+        playerWins = 0;
+        computerWins = 0;
     }
 }
-
-console.log(game());
